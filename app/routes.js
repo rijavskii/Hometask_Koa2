@@ -14,37 +14,41 @@ const userCtr = require("./controllers/userController")(app);
  * @example curl -v -X GET "http://127.0.0.1:3000/users/1"
  */
 router.get('/users', userCtr.get)
-      .get('/users/:id', userCtr.getById);
-
+        .get('/users/:id', userCtr.getById)
+        .post('/users', bodyParser(), userCtr.post)
+        .put('/users/:id', bodyParser(), userCtr.put)
+        .del("/users/:id", userCtr.delete);
 /**
  * @example curl -v -X POST "http://127.0.0.1:3000/users" -d '{"name": "Vasya"}' -H "Content-Type: application/json"
  */
-router.post('/users', bodyParser(), userCtr.post);
+//router.post('/users', bodyParser(), userCtr.post);
 
 /**
- * @example curl -v -X PUT "http://127.0.0.1:3000/users/1" -d '{"name":"Petya"}' -H "Content-Type: application/json"
- */
-router.put('/users/:id', bodyParser(), userCtr.put);
-
-/**
- * @example curl -v -X DELETE "http://127.0.0.1:3000/users/1"
- */
-router.del("/users/:id", userCtr.delete);
+//  * @example curl -v -X PUT "http://127.0.0.1:3000/users/1" -d '{"name":"Petya"}' -H "Content-Type: application/json"
+//  */
+// router.put('/users/:id', bodyParser(), userCtr.put);
+//
+// /**
+//  * @example curl -v -X DELETE "http://127.0.0.1:3000/users/1"
+//  */
+// router.del("/users/:id", userCtr.delete);
 
 /**
  * @example curl -v -X GET "http://127.0.0.1:3000/users/1/purchases"
  */
-router.get('/users/:id/purchases', memcacheCtr.getById);
+router.get('/users/:id/purchases', memcacheCtr.getById)
+        .put('/users/:id/purchases', bodyParser(), memcacheCtr.add)
+        .del("/users/:id/purchases", memcacheCtr.delete);
 
 /**
  * @example curl -v -X PUT "http://127.0.0.1:3000/users/1/purchases" -d '{"count": 10}' -H "Content-Type: application/json"
  */
-router.put('/users/:id/purchases', bodyParser(), memcacheCtr.add);
+// router.put('/users/:id/purchases', bodyParser(), memcacheCtr.add);
 
 /**
  * @example curl -v -X DELETE "http://127.0.0.1:3000/users/1/purchases"
  */
-router.del("/users/:id/purchases", memcacheCtr.delete);
+// router.del("/users/:id/purchases", memcacheCtr.delete);
 
 
 app.use(async(ctx, next) => {
