@@ -4,8 +4,7 @@
 "use strict";
 
 const Memcache = require('memcached'),
-    memcache = new Memcache('localhost:11211'),
-    Q=require('q');
+    memcache = new Memcache('localhost:11211');
 
 /**
  * Встановлюємо звязок з сервером memcached
@@ -25,28 +24,21 @@ module.exports = {
      */
     getById:(id)=> {
         return new Promise((resolve, reject)=>{
-            let count;
-            try {
                 memcache.get(id, (error, val) => {
-                    if (error) {
-                        console.log("my error");
-                        // reject("add error: {error}");
-                    } else {
+                    if (error) reject(error);
+                    try {
                         if (!val) {
                             console.log(val);
                             resolve({});
                         } else {
-                            let count = val.toString();
                             console.log(val, "getID");
                             resolve(val);
                         }
+                    }catch(e){
+                        reject(e)
                     }
-                })
-            }catch(e){
-                reject(e)
-            }
+            })
         })
-
     },
     /**
      * @example curl -v -X POST "http://127.0.0.1:3000/users/2/purchases" -d '{"count":10}'
@@ -55,22 +47,20 @@ module.exports = {
      */
     add: (id,params)=>{
         return new Promise((resolve, reject)=>{
-            try {
-                let count = JSON.stringify(params);
+            let count = JSON.stringify(params);
                 console.log(count, id);
                 memcache.add(id, count, 100, function (err) {
                     if (err) {
                         console.log("Error");
                         reject(err);
-                    } else {
+                    }
+                    try{
                         console.log("Add");
                         resolve(count);
+                    }catch(e) {
+                        reject(e);
                     }
-                });
-            }catch(e){
-                console.log("Catch");
-                reject(e);
-            }
+            })
         })
     },
 
@@ -81,18 +71,18 @@ module.exports = {
 
     delete:(id)=>{
         return new Promise((resolve, reject)=>{
-                try{
+
                     memcache.delete(id, function(err){
                         if(err)
                             reject(err);
-                        else
+                        try{
                             resolve(`User(${id}) count purchases was deleted`);
-                    } )
-                }catch(e){
-                    reject(e);
+                        }catch(e) {
+                            reject(e);
+                        }
+                    })
                 }
-            }
-        )
-    }
+            )
+        }
 
 };
