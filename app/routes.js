@@ -34,7 +34,7 @@ router.del("/users/:id", userCtr.delete);
 /**
  * @example curl -v -X GET "http://127.0.0.1:3000/users/1/purchases"
  */
-router.get("/users/:id/purchases", memcacheCtr.getById);
+router.get('/users/:id/purchases', memcacheCtr.getById);
 
 /**
  * @example curl -v -X PUT "http://127.0.0.1:3000/users/1/purchases" -d '{"count": 10}' -H "Content-Type: application/json"

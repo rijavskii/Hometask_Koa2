@@ -1,6 +1,7 @@
 /**
  * Created by aryzhavskij on 1/31/17.
  */
+"use strict";
 
 module.exports = (app)=>{
     let memcachedModel = require('../models/memcached');
@@ -17,12 +18,8 @@ module.exports = (app)=>{
 
         getById: async(ctx, next)=>{
             try {
-                // console.log("Memcached get")
-                // let body = await memcachedModel.getById(ctx.params.id);
-                // console.log(await memcachedModel.getById(ctx.params.id), "router");
-                // console.log(body, "body");
-                ctx.body = await '{"count": 145}';
-                ctx.status = 204;
+                console.log(ctx.params.id);
+                ctx.body = await memcachedModel.getById(ctx.params.id);
             }catch(e){
                 ctx.status = 400;
             }

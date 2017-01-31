@@ -34,7 +34,7 @@ module.exports = {
                     } else {
                         if (!val) {
                             console.log(val);
-                            resolve("");
+                            resolve({});
                         } else {
                             let count = val.toString();
                             console.log(val, "getID");
